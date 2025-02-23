@@ -20,7 +20,7 @@ import ShoppingListing from './pages/shopping-view/ShoppingListing'
 import PaypalReturnPage from './pages/shopping-view/PaypalReturnPage'
 import PaymentSuccess from './pages/shopping-view/PaymentSuccess'
 
-import CheckAuth from './components/common/checkAuth'
+import CheckAuth from './components/common/CheckAuth'
 
 import NotFound from './pages/not-found/NotFound'
 import UnauthPage from './pages/unauth-page/UnauthPage'
