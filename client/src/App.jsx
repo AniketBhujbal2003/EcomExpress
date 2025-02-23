@@ -50,7 +50,7 @@ const App = () => {
     return (
       <div>
         <div className='flex min-h-screen min-w-screen justify-center items-center '>
-          <CircularProgress  size="4rem" color='black' />
+          <CircularProgress size="4rem" color='black' />
         </div>
       </div>
     )
@@ -60,9 +60,19 @@ const App = () => {
   return (
     <div className=' flex flex-col overflow-hidden bg-white '>
 
-   
+
 
       <Routes>
+
+        <Route
+          path="/"
+          element={
+            <CheckAuth
+              isAuthenticated={isAuthenticated}
+              user={user}
+            ></CheckAuth>
+          }
+        />
 
         <Route
           path='/auth'
