@@ -18,12 +18,12 @@ const CheckAuth = ({ isAuthenticated, user, children }) => {
     if (isAuthenticated &&
         (locaiton.pathname.includes('/login') ||
             locaiton.pathname.includes('/register'))
-    ) {
+    ){
         if(user?.role==='admin'){
             return ( <Navigate to="/admin/dashboard" ></Navigate> )
         }
         else{
-            console.log('Anik')
+            // console.log('Anik')
             return (<Navigate to="/shop/home"></Navigate>)
         }
     }
