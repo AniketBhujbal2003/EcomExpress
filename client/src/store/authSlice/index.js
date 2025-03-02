@@ -106,7 +106,7 @@ const authSlice = createSlice({
         setUser: (state, action) => {
 
         },
-        resetTokenAndCredentials:()=>{
+        resetTokenAndCredentials:(state,action)=>{
             state.token = null;
             state.isAuthenticated=false;
             state.user = null;

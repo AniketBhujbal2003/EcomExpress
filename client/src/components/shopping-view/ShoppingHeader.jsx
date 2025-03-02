@@ -25,7 +25,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from '../../components/ui/button'
 import { shoppingViewHeaderMenuItems } from '@/config'
 import { useDispatch, useSelector } from 'react-redux'
-import { logoutUser } from '@/store/authSlice'
+import { logoutUser, resetTokenAndCredentials } from '@/store/authSlice'
 import UserCartWrapper from './UserCartWrapper'
 
 
