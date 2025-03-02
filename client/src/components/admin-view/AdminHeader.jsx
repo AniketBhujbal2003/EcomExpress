@@ -4,13 +4,20 @@ import MenuIcon from '@mui/icons-material/Menu';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { Button } from '../ui/button';
 import { useDispatch } from 'react-redux';
-import { logoutUser } from '@/store/authSlice';
+import { logoutUser, resetTokenAndCredentials } from '@/store/authSlice';
+import { useNavigate } from 'react-router-dom';
 
 const AdminHeader = ({setOpen}) => {
 
+  let navigate = useNavigate();
+
   let dispatch = useDispatch();
   let handleLogout = ()=>{
-     dispatch(logoutUser());
+    //  dispatch(logoutUser());
+    dispatch(resetTokenAndCredentials());
+    sessionStorage.clear();
+    navigate('/auth/login');
+
   }
 
   return (

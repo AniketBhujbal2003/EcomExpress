@@ -16,30 +16,30 @@ const registerUser = async (req, res) => {
         let userExits = await User.findOne({ 'email': email });
 
         if (userExits) {
-           return  res.status(200).json(
+            return res.status(200).json(
                 {
                     success: false,
                     message: 'User already exits with same email'
                 }
             )
         }
-       
-            const hashedPassword = await bcrypt.hash(password, 10);
 
-            const newUser = new User({
-                username, email, password: hashedPassword,
-            })
+        const hashedPassword = await bcrypt.hash(password, 10);
 
-            await newUser.save();
+        const newUser = new User({
+            username, email, password: hashedPassword,
+        })
 
-            res.status(200).json(
-                {
-                    success: true,
-                    message: 'Registration Succesfull'
-                }
-            )
-            console.log(" RegControler:  New User Registered Succesfully");
-        
+        await newUser.save();
+
+        res.status(200).json(
+            {
+                success: true,
+                message: 'Registration Succesfull'
+            }
+        )
+        console.log(" RegControler:  New User Registered Succesfully");
+
     }
     catch (err) {
         console.log("Error From register controler:", err);
@@ -65,7 +65,7 @@ const loginUser = async (req, res) => {
         // console.log(userExits);
 
         if (!userExits) {
-            return  res.status(200).json(
+            return res.status(200).json(
                 {
                     success: false,
                     message: 'User Does Not Exits'
@@ -78,15 +78,15 @@ const loginUser = async (req, res) => {
         let isPasswoardCorrect = await bcrypt.compare(password, hashedPassword);
 
         if (!isPasswoardCorrect) {
-            return  res.status(200).json(
+            return res.status(200).json(
                 {
                     success: false,
                     message: 'Password is incorret'
                 }
             )
         }
-        
-        const token =  jwt.sign(
+
+        const token = jwt.sign(
             {
                 id: userExits._id,
                 role: userExits.role,
@@ -94,19 +94,32 @@ const loginUser = async (req, res) => {
                 username: userExits.username,
 
             },
-            
-                JWT_SECRETE_KEY ,
-            
+
+            JWT_SECRETE_KEY,
+
             {
-                expiresIn:'60m'
+                expiresIn: '60m'
             }
         )
 
-        res.cookie('token',token,{httpOnly:true,secure:true}).json(
+        // res.cookie('token',token,{httpOnly:true,secure:true}).json(
+        //     {
+        //        
+        //         user:{
+        //             email: userExits.email,
+        //             role: userExits.role,
+        //             id: userExits._id,
+        //             username: userExits.username,
+        //         }
+        //     }
+        // )
+
+        res.status(200).json(
             {
-                success:true,
-                message: 'LoggedIn Successfull',
-                user:{
+                success: true,
+                messagae: "Loggin Successfull",
+                token,
+                user: {
                     email: userExits.email,
                     role: userExits.role,
                     id: userExits._id,
@@ -130,11 +143,11 @@ const loginUser = async (req, res) => {
 
 // logout
 
-const logoutUser = async (req,res)=>{
-     
+const logoutUser = async (req, res) => {
+
     res.clearCookie('token').json(
         {
-            success:true,
+            success: true,
             messsage: "User logout Succesfully"
         }
     )
@@ -142,30 +155,65 @@ const logoutUser = async (req,res)=>{
 
 // auth Middlewares
 
-const authMiddleware =async (req,res,next)=>{
+// const authMiddleware = async (req, res, next) => {
 
-    const token = req.cookies.token;
+//     const token = req.cookies.token;
+//     // console.log(token);
+//     if (!token) {
+//         return res.status(401).json(
+//             {
+//                 success: false,
+//                 messagae: 'Unauthrized User'
+//             }
+//         )
+//     }
+
+//     try {
+//         const decoded = jwt.verify(token, JWT_SECRETE_KEY);
+//         console.log(decoded);
+//         req.user = decoded;
+//         next();
+//     }
+//     catch (err) {
+//         console.log("Error from authMiddleware: ", err);
+//         return res.status(401).json(
+//             {
+//                 success: false,
+//                 messagae: 'Unauthrized User'
+//             }
+//         )
+//     }
+
+// }
+
+
+const authMiddleware = async (req, res, next) => {
+    
+    let authHeaders = req.headers['authorization'];
+    const token = authHeaders && authHeaders.split(' ')[1];
+
+    // const token = req.cookies.token;
     // console.log(token);
-    if(!token){
+    if (!token) {
         return res.status(401).json(
             {
-                success:false,
+                success: false,
                 messagae: 'Unauthrized User'
             }
         )
     }
 
-    try{
-        const decoded = jwt.verify(token,JWT_SECRETE_KEY);
+    try {
+        const decoded = jwt.verify(token, JWT_SECRETE_KEY);
         console.log(decoded);
         req.user = decoded;
         next();
     }
-    catch(err){
-        console.log("Error from authMiddleware: ",err);
+    catch (err) {
+        console.log("Error from authMiddleware: ", err);
         return res.status(401).json(
             {
-                success:false,
+                success: false,
                 messagae: 'Unauthrized User'
             }
         )
@@ -174,4 +222,5 @@ const authMiddleware =async (req,res,next)=>{
 }
 
 
-module.exports = { registerUser, loginUser , logoutUser,authMiddleware};
+
+module.exports = { registerUser, loginUser, logoutUser, authMiddleware };

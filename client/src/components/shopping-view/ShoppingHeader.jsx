@@ -36,22 +36,22 @@ function MenuItems() {
 
   const navigate = useNavigate();
 
-  const handleNavigateToListingPage = (getCurrentMenuItem)=>{
+  const handleNavigateToListingPage = (getCurrentMenuItem) => {
     // console.log("We are here")
     sessionStorage.removeItem('filters');
-    const currentFilter={
-      category :[getCurrentMenuItem.id]
+    const currentFilter = {
+      category: [getCurrentMenuItem.id]
     }
-    sessionStorage.setItem('filters',JSON.stringify(currentFilter))
+    sessionStorage.setItem('filters', JSON.stringify(currentFilter))
     navigate('/shop/listing')
   }
 
-  return <nav  className='flex flex-col mb-3 lg:mb-0 lg:items-center gap-6 lg:flex-row' >
+  return <nav className='flex flex-col mb-3 lg:mb-0 lg:items-center gap-6 lg:flex-row' >
     {
       shoppingViewHeaderMenuItems.map((menuItem) => {
-        return <Link   className='font-medium' key={menuItem.id} to={menuItem.path}>
+        return <Link className='font-medium' key={menuItem.id} to={menuItem.path}>
           {menuItem.label}
-          
+
         </Link>
       })
     }
@@ -74,7 +74,10 @@ function HeaderRightContent() {
 
 
   const handleLogout = () => {
-    dispatch(logoutUser());
+    // dispatch(logoutUser());
+    dispatch(resetTokenAndCredentials());
+    sessionStorage.clear();
+    navigate('/auth/login');
   }
 
   return <div className='flex flex-col lg:items-center lg:flex-row gap-4' >
@@ -84,7 +87,7 @@ function HeaderRightContent() {
         <ShoppingCart className='h-6 w-6' />
         <span className='sr-only' > User cart</span>
       </Button>
-      <UserCartWrapper  cartItems={items} ></UserCartWrapper>
+      <UserCartWrapper cartItems={items} ></UserCartWrapper>
     </Sheet>
 
     <DropdownMenu>
