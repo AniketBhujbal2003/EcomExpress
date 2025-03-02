@@ -33,7 +33,6 @@ export const loginUser = createAsyncThunk('/auth/login',
                 withCredentials: true,
             }
         )
-
         console.log(response);
         return response.data;
     }
