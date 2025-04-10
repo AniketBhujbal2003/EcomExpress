@@ -42,11 +42,11 @@ const registerUser = async (req, res) => {
 
     }
     catch (err) {
-        console.log("Error From register controler:", err);
+        console.log("Error From register controler:", err.messagae);
         res.status(500).json(
             {
                 success: false,
-                message: 'Some error occur at register controler'
+                message: "Internal Server Error",
             }
         )
     }

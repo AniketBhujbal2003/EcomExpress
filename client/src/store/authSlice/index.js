@@ -90,11 +90,7 @@ export const checkAuth = createAsyncThunk('/auth/checkauth',
 
         );
 
-        return response.data
-
-
-
-
+        return response.data;
     }
 )
 
